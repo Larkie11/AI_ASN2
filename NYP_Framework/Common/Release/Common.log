@@ -1,0 +1,30 @@
+﻿Build started 2/1/2017 1:47:41 AM.
+     1>Project "C:\Users\WM\Desktop\NYP_Framework\Common\Common.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _VARIADIC_MAX=10 /D WIN32 /D NDEBUG /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source\CameraBase.cpp Source\Collider\Collider.cpp Source\EntityBase.cpp Source\GraphicsManager.cpp Source\KeyboardController.cpp Source\LightBase.cpp Source\LoadOBJ.cpp Source\LoadTGA.cpp Source\MathUtility.cpp Source\MatrixStack.cpp Source\Mesh.cpp Source\MeshBuilder.cpp Source\MouseController.cpp Source\Mtx44.cpp Source\RenderHelper.cpp Source\SceneManager.cpp Source\ShaderProgram.cpp Source\timer.cpp Source\Utility.cpp Source\Vector2.cpp Source\Vector3.cpp Source\Win32Input.cpp
+         CameraBase.cpp
+         Collider.cpp
+         EntityBase.cpp
+         GraphicsManager.cpp
+     1>Source\GraphicsManager.cpp(2): fatal error C1083: Cannot open include file: 'GL\glew.h': No such file or directory
+         KeyboardController.cpp
+         LightBase.cpp
+         LoadOBJ.cpp
+         LoadTGA.cpp
+     1>Source\LoadTGA.cpp(4): fatal error C1083: Cannot open include file: 'GL\glew.h': No such file or directory
+         MathUtility.cpp
+         MatrixStack.cpp
+         Mesh.cpp
+     1>Source\Mesh.cpp(3): fatal error C1083: Cannot open include file: 'GL\glew.h': No such file or directory
+         MeshBuilder.cpp
+     1>Source\MeshBuilder.cpp(3): fatal error C1083: Cannot open include file: 'GL\glew.h': No such file or directory
+         MouseController.cpp
+         Mtx44.cpp
+         RenderHelper.cpp
+         SceneManager.cpp
+         ShaderProgram.cpp
+     1>Done Building Project "C:\Users\WM\Desktop\NYP_Framework\Common\Common.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:04.05
