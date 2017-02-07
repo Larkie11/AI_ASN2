@@ -4,6 +4,7 @@
 #include "GraphicsManager.h"
 #include "MyMath.h"
 #include <iostream>
+#include "../Sound.h"
 using namespace std;
 
 CWeaponInfo::CWeaponInfo()
@@ -149,7 +150,7 @@ void CWeaponInfo::Discharge(Vector3 position, Vector3 target, CPlayerInfo* _sour
 		{
 			if (_source->GetWeaponType() == CPlayerInfo::WT_PISTOL)
 			{
-				sound.playSE("Music//Mining.mp3");
+				Sound::GetInstance()->playSE(soundeffect);
 
 				// Create a projectile with a cube mesh. Its position and direction is same as the player.
 				// It will last for 3.0 seconds and travel at 500 units per second
@@ -170,7 +171,7 @@ void CWeaponInfo::Discharge(Vector3 position, Vector3 target, CPlayerInfo* _sour
 			}
 			if (_source->GetWeaponType() == CPlayerInfo::WT_GUN)
 			{
-				sound.playSE("Music//Mining.mp3");
+				Sound::GetInstance()->playSE(soundeffect);
 				// Create a projectile with a cube mesh. Its position and direction is same as the player.
 				// It will last for 3.0 seconds and travel at 500 units per second
 				CProjectile* aProjectile = Create::Projectile("shotgunB",

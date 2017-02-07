@@ -9,6 +9,17 @@
 
 class SceneManager;
 
+class TextEntity;
+
+enum States
+{
+	GAMEPLAY,
+	INSTRUCTION,
+	SETTINGS,
+	QUIT,
+	MAX_STATES,
+};
+
 class CMenuState : public Scene
 {
 public:
@@ -23,4 +34,13 @@ public:
 private:
 	FPSCamera camera;
 	SpriteEntity* MenuStateBG;
+	SpriteEntity* Logo;
+	SpriteEntity* Arrow;
+
+	TextEntity* textObj[6];
+	bool showLoading;
+	float logoypos;
+	float arrowypos;
+	States currState;
+	int myState;
 };

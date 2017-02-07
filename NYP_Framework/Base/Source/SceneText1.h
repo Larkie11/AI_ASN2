@@ -32,8 +32,6 @@ public:
 
 private:
 	//SceneText1(SceneManager* _sceneMgr); // This is used to register to SceneManager
-	
-	Sound sound;
 	ShaderProgram* currProg;
 	CPlayerInfo* playerInfo;
 	GroundEntity* groundEntity;

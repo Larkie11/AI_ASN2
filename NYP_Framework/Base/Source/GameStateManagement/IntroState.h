@@ -27,7 +27,7 @@ private:
 	FPSCamera camera;
 	SpriteEntity* IntroStateBG;
 	float toNextScene;
-	TextEntity* textObj[13];
+	TextEntity* textObj[1];
 	float z = 1.f;
 	bool fadedInText = false;
 

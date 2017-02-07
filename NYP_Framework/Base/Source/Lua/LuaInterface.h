@@ -60,6 +60,7 @@ public:
 	void saveFloatValue(const char* varName, const float value, const bool bOverwrite = NULL);
 	const char* getStringtValue(const char* varName);
 	void error(const char*errorCode);
+	const char*  CLuaInterface::GetStringField(const char*key);
 
 	// Pointer to the Lua State
 	lua_State *theLuaState;

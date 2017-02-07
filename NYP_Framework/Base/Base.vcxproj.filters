@@ -159,6 +159,12 @@
     <ClCompile Include="Source\GameStateManagement\IntroState.cpp">
       <Filter>GameStateManagement</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\Settings.cpp">
+      <Filter>GameStateManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\Instructions.cpp">
+      <Filter>GameStateManagement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -283,6 +289,12 @@
     </ClInclude>
     <ClInclude Include="Source\LevelOfDetails\CLevelOfDetails.h">
       <Filter>LevelOfDetails</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\Settings.h">
+      <Filter>GameStateManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\Instructions.h">
+      <Filter>GameStateManagement</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

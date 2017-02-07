@@ -20,13 +20,16 @@ return distanceSquare
 end
 
 title = "DM2240 - Week 14 Scripting"
+music = {Menu = "Music//Menu.mp3", BGM = "Music//Background.mp3"}
 width = 800
 height = 600
 position = {100,0,130}
 playerstats = {health = 100, score = 0, weaponType = 1}
-waves = {wave1 = 20, wave2 = 50, wave3 = 80, wave4 = 130, survive = 150}
+waves = {wave1 = 45,wave2 = 65, wave3 = 80, wave4 = 130, survive = 150}
 UP = "Z";
 LEFT = "X";
 RIGHT = "C";
 DOWN = "V";
-intro = "Image//IntroState.tga";
+pictures = {menupic = "Image//Menu.tga", menulogo = "Image//Logo.tga", menuarrow = "Image//Arrow.tga",
+instructpic = "Image//InstructionsPage.tga", instructlogo = "Image//Instructions.tga"}
+pistolinfo = {maground = 8, maxmaground = 8, totalround = 40, maxtotalround = 40, timebetween = 0.2, se = "Music//Mining.mp3" }

@@ -8,10 +8,13 @@ Handles music and sound effect for the game using irrklang
 */
 /******************************************************************************/
 #include "Sound.h"
+#include <iostream>
 
 Sound::Sound()
+: toplay(true)
 {
 	musicEngine = irrklang::createIrrKlangDevice();
+	isAlreadyPlaying = false;
 }
 Sound::~Sound()
 {
@@ -32,6 +35,27 @@ Takes in path of background music to play
 void Sound::playMusic(string Music)
 {
 	Song = musicEngine->play2D(Music.c_str(), true, false, true);
+}
+void Sound::setPlayingMenu(bool isplaying)
+{
+	isAlreadyPlaying = isplaying;
+}
+bool Sound::isPlayingMenu()
+{
+	return isAlreadyPlaying;
+}
+void Sound::onOff(float volume)
+{
+	if (volume >= 1.f)
+		volume = 1.f;
+	if (volume <= 0.f)
+		volume = 0.f;
+
+	musicEngine->setSoundVolume(volume);
+}
+float Sound::getOnOff()
+{
+	return musicEngine->getSoundVolume();
 }
 /******************************************************************************/
 /*!

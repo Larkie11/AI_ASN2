@@ -27,6 +27,7 @@ void CShotGun::Init(void)
 
 	// The time between shots
 	timeBetweenShots = 1.4;
+	soundeffect = "Music//Mining.mp3";
 	// The elapsed time (between shots)
 	elapsedTime = 1.0;
 	// Boolean flag to indicate if weapon can fire now

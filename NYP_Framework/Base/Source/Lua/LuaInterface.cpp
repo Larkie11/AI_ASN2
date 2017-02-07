@@ -153,7 +153,20 @@ float CLuaInterface::getDistanceSquareValue(const char* varName,
 	lua_pop(theLuaState, 1);
 	return distanceSquare;
 }
+const char* CLuaInterface::GetStringField(const char*key)
+{
+	const char* result;
+	if (!lua_istable(theLuaState, -1))
+		error("error100");
 
+	lua_pushstring(theLuaState, key);
+	lua_gettable(theLuaState, -2);
+	if (!lua_isstring(theLuaState, -1))
+		error("error102");
+	result = lua_tostring(theLuaState, -1);
+	lua_pop(theLuaState, 1);
+	return result;
+}
 float CLuaInterface::GetField(const char*key)
 {
 	int result;

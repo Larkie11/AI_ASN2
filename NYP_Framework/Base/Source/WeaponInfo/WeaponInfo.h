@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Vector3.h"
-#include "../Sound.h"
 
 class CPlayerInfo;
 
@@ -12,8 +11,6 @@ public:
 	CWeaponInfo();
 	virtual ~CWeaponInfo();
 protected:
-	Sound sound;
-
 	// The number of ammunition in a magazine for this weapon
 	int magRounds;
 	// The maximum number of ammunition for this magazine for this weapon
@@ -28,6 +25,7 @@ protected:
 	double elapsedTime;
 	// Boolean flag to indicate if weapon can fire now
 	bool bFire;
+	const char* soundeffect;
 public:
 	// Set the number of ammunition in the magazine for this player
 	virtual void SetMagRound(const int magRounds);

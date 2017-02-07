@@ -23,6 +23,7 @@
 #include "SceneGraph\SceneGraph.h"
 #include "SpatialPartition\SpatialPartition.h"
 #include "Lua\LuaInterface.h"
+#include "../Sound.h"
 
 #include <iostream>
 using namespace std;
@@ -386,14 +387,15 @@ void SceneText1::Init()
 	textObj[9] = Create::Text2DObject("text", Vector3(-halfWindowWidth + 140, Application::GetInstance().GetWindowHeight() / 3.5, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(1.0f, 0.0f, 0.0f));
 	textObj[10] = Create::Text2DObject("text", Vector3(-halfWindowWidth + 140, Application::GetInstance().GetWindowHeight() / 3, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(1.0f, 0.0f, 0.0f));
 
-	sound.playMusic("Music//Background.mp3");
+	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "music");
+	Sound::GetInstance()->playMusic(CLuaInterface::GetInstance()->GetStringField("BGM"));
 }
 
 void SceneText1::Update(double dt)
 {
 	// Update our entities
 	EntityManager::GetInstance()->Update(dt);
-
+	
 	elasped = (clock() - t0) / CLOCKS_PER_SEC;
 	// THIS WHOLE CHUNK TILL <THERE> CAN REMOVE INTO ENTITIES LOGIC! Or maybe into a scene function to keep the update clean
 	/*if (KeyboardController::GetInstance()->IsKeyDown('1'))
@@ -476,8 +478,12 @@ void SceneText1::Update(double dt)
 	}
 
 	if (elasped >= survive)
+	{
 		waveNo = "WIN";
-	if (playerInfo->playerHealth <= 0)
+		SceneManager::GetInstance()->SetActiveScene("MenuState");
+		Sound::GetInstance()->stopMusic("Music//Background.mp3");
+	}
+		if (playerInfo->playerHealth <= 0)
 		waveNo = "LOSE";
 
 	/*if (KeyboardController::GetInstance()->IsKeyDown('I'))
@@ -541,7 +547,7 @@ void SceneText1::Update(double dt)
 	std::ostringstream ss;
 	ss.precision(5);
 	float fps = (float)(1.f / dt);
-	ss << "FPS: " << fps;
+	ss << "Vol: " << Sound::GetInstance()->getOnOff();
 	textObj[0]->SetText(ss.str());
 
 	ss.str("");

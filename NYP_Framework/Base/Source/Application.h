@@ -5,6 +5,8 @@
 #include "SceneText.h"
 #include "GameStateManagement\IntroState.h"
 #include "GameStateManagement\MenuState.h"
+#include "GameStateManagement\Settings.h"
+#include "GameStateManagement\Instructions.h"
 #include "SceneText1.h"
 
 struct GLFWwindow;

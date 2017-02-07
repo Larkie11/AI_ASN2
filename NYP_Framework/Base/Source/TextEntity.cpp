@@ -32,6 +32,7 @@ void TextEntity::Render()
 	modelStack.PushMatrix();
 	modelStack.Translate(position.x, position.y, position.z);
 	modelStack.Scale(scale.x, scale.y, scale.z);
+	glColor3f(color.r, color.g, color.b);
 	RenderHelper::RenderText(modelMesh, text, color);
 	modelStack.PopMatrix();
 }
@@ -45,6 +46,7 @@ void TextEntity::RenderUI()
 	modelStack.PushMatrix();
 	modelStack.Translate(position.x, position.y, position.z);
 	modelStack.Scale(scale.x, scale.y, scale.z);
+	glColor3f(color.r, color.g, color.b);
 	RenderHelper::RenderText(modelMesh, text, color);
 	modelStack.PopMatrix();
 }

@@ -118,6 +118,9 @@ void Application::Init()
 	GraphicsManager::GetInstance()->Init();
 	SceneManager::GetInstance()->AddScene("IntroState", new CIntroState());
 	SceneManager::GetInstance()->AddScene("MenuState", new CMenuState());
+	SceneManager::GetInstance()->AddScene("SettingsState", new CSettings());
+	SceneManager::GetInstance()->AddScene("InstructionsState", new CInstructions());
+
 	SceneManager::GetInstance()->AddScene("GameState", new SceneText());
 	SceneManager::GetInstance()->AddScene("GameState1", new SceneText1());
 

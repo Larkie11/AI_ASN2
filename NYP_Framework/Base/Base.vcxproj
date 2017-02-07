@@ -16,8 +16,10 @@
     <ClCompile Include="Source\Enemy\EnemyFollower.cpp" />
     <ClCompile Include="Source\EntityManager.cpp" />
     <ClCompile Include="Source\FPSCamera.cpp" />
+    <ClCompile Include="Source\GameStateManagement\Instructions.cpp" />
     <ClCompile Include="Source\GameStateManagement\IntroState.cpp" />
     <ClCompile Include="Source\GameStateManagement\MenuState.cpp" />
+    <ClCompile Include="Source\GameStateManagement\Settings.cpp" />
     <ClCompile Include="Source\GenericEntity.cpp" />
     <ClCompile Include="Source\GroundEntity.cpp" />
     <ClCompile Include="Source\LevelOfDetails\CLevelOfDetails.cpp" />
@@ -55,8 +57,10 @@
     <ClInclude Include="Source\Enemy\EnemyFollower.h" />
     <ClInclude Include="Source\EntityManager.h" />
     <ClInclude Include="Source\FPSCamera.h" />
+    <ClInclude Include="Source\GameStateManagement\Instructions.h" />
     <ClInclude Include="Source\GameStateManagement\IntroState.h" />
     <ClInclude Include="Source\GameStateManagement\MenuState.h" />
+    <ClInclude Include="Source\GameStateManagement\Settings.h" />
     <ClInclude Include="Source\GenericEntity.h" />
     <ClInclude Include="Source\GroundEntity.h" />
     <ClInclude Include="Source\LevelOfDetails\CLevelOfDetails.h" />

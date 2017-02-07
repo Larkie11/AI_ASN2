@@ -60,6 +60,7 @@ uniform bool colorTextureEnabled;
 uniform sampler2D colorTexture;
 
 void main(){
+	
 	if(lightEnabled == true)
 	{
 		// Material properties

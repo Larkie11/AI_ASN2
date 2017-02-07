@@ -13,6 +13,7 @@ Handles music and sound effect for the game using irrklang
 #include "irrKlang.h"
 #include <string>
 using std::string;
+#include "SingletonTemplate.h"
 
 #pragma comment(lib, "irrKlang.lib")
 /******************************************************************************/
@@ -21,8 +22,10 @@ Class Sound:
 \brief	Creates sound engine and allows music to be played
 */
 /******************************************************************************/
-class Sound
+class Sound : public Singleton<Sound>
 {
+	friend Singleton<Sound>;
+
 public:
 	
 	Sound();
@@ -30,10 +33,16 @@ public:
 	void playMusic(string Music);
 	void stopMusic(string Music);
 	void playSE(string Music);
-	
+	void onOff(float volume);
+	float getOnOff();
+	bool toplay;
+	bool isPlayingMenu();
+	void setPlayingMenu(bool);
+
 private:
 	irrklang::ISoundEngine* musicEngine;
 	irrklang::ISound* Song;
 	irrklang::ISound* SoundEffect;
+	bool isAlreadyPlaying;
 };
 #endif

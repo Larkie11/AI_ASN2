@@ -104,7 +104,7 @@ bool EntityManager::RemoveEntity(EntityBase* _existingEntity)
 		// Remove from SceneNode too
 		if (CSceneGraph::GetInstance()->DeleteNode(_existingEntity)==false)
 		{
-			cout << "EntityManager::RemoveEntity: Unable to remove this entity from Scene Graph" << endl;
+			//cout << "EntityManager::RemoveEntity: Unable to remove this entity from Scene Graph" << endl;
 		}
 		else
 		{

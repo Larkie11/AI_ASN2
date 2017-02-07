@@ -1,6 +1,6 @@
 #include <iostream>
 using namespace std;
-
+#include <iomanip>
 #include "IntroState.h"
 #include "GL\glew.h"
 #include "../Application.h"
@@ -40,19 +40,24 @@ void CIntroState::Init()
 	MeshBuilder::GetInstance()->GenerateText("text", 16, 16);
 	MeshBuilder::GetInstance()->GetMesh("text")->textureID = LoadTGA("Image//calibri.tga");
 	MeshBuilder::GetInstance()->GetMesh("text")->material.kAmbient.Set(1, 0, 0);
-	float halfWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
-	float halfHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
-	IntroStateBG = Create::Sprite2DObject("INTROSTATE_BG", Vector3(halfWidth, halfHeight, 1.f), Vector3(800.f, 600.0f, 1.0f));
-	float halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
-	float halfWindowHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
+	float windowWidth = Application::GetInstance().GetWindowWidth();
+	float windowHeight = Application::GetInstance().GetWindowHeight();
+	IntroStateBG = Create::Sprite2DObject("INTROSTATE_BG", Vector3(windowWidth * 0.5, windowHeight*0.5, 1.f), Vector3(800.f, 600.0f, 1.0f));
+	
 	cout << "Intro loaded\n" << endl;
-	textObj[0] = Create::Text2DObject("text", Vector3(500, 500, 2.0f), "", Vector3(50, 50, 50), Color(1.0f, 0.0f, 0.0f));
+	textObj[0] = Create::Text2DObject("text", Vector3(windowWidth*0.25, windowHeight *0.8, 2.0f), "", Vector3(30, 30, 1), Color(1.0f, 0.0f, 0.0f));
+	textObj[1] = Create::Text2DObject("text", Vector3(windowWidth*0.13, textObj[0]->GetPosition().y - 30, 2.0f), "", Vector3(30, 30, 1), Color(1.0f, 0.0f, 0.0f));
 
+	toNextScene = 5.f;
 
 }
 void CIntroState::Update(double dt)
 {
-	if (KeyboardController::GetInstance()->IsKeyReleased(VK_SPACE))
+	toNextScene -= dt;
+	if (toNextScene <= 0.f)
+		toNextScene = 0;
+
+	if (KeyboardController::GetInstance()->IsKeyReleased(VK_SPACE) || toNextScene <= 0.f)
 	{
 		cout << "Loading menu" << endl;
 		SceneManager::GetInstance()->SetActiveScene("MenuState");
@@ -70,9 +75,12 @@ void CIntroState::Render()
 
 	std::ostringstream ss;
 	ss.str("");
-	ss << "Health: ";
+	ss << "Press <SPACE>";
 	textObj[0]->SetText(ss.str());
 
+	ss.str("");
+	ss << "or wait " << std::setprecision(2) << toNextScene << " seconds";
+	textObj[1]->SetText(ss.str());
 
 	GraphicsManager::GetInstance()->SetOrthographicProjection(0, Application::GetInstance().GetWindowWidth(), 0, Application::GetInstance().GetWindowHeight(), -10, 10);
 	
@@ -84,6 +92,17 @@ void CIntroState::Render()
 void CIntroState::Exit()
 {
 	EntityManager::GetInstance()->RemoveEntity(IntroStateBG);
+	EntityManager::GetInstance()->RemoveEntity(textObj[0]);
+	EntityManager::GetInstance()->RemoveEntity(textObj[1]);
+
 	MeshBuilder::GetInstance()->RemoveMesh("INTROSTATE_BG");
 	GraphicsManager::GetInstance()->DetachCamera();
+	
+	/*for (int i = 0; i < 1; i++)
+	{
+		if (textObj[i] != NULL)
+		{
+			
+		}
+	}*/
 }
