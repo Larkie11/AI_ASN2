@@ -58,6 +58,7 @@ TextEntity* Create::Text2DObject(const std::string& _meshName, const Vector3& _p
 	TextEntity* result = new TextEntity(modelMesh, _text, _color);
 	result->SetPosition(_position);
 	result->SetScale(_scale);
+	result->SetColor(_color);
 	result->SetTextRenderMode(TextEntity::MODE_2D);
 	EntityManager::GetInstance()->AddEntity(result);
 	return result;

@@ -29,3 +29,4 @@ UP = "Z";
 LEFT = "X";
 RIGHT = "C";
 DOWN = "V";
+intro = "Image//IntroState.tga";

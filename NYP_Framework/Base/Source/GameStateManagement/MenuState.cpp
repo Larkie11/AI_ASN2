@@ -32,7 +32,7 @@ void CMenuState::Init()
 	GraphicsManager::GetInstance()->AttachCamera(&camera);
 
 	MeshBuilder::GetInstance()->GenerateQuad("MENUSTATE_BG", Color(1, 1, 1), 1.f);
-	MeshBuilder::GetInstance()->GetMesh("MENUSTATE_BG")->textureID = LoadTGA("Image//MenuState.tga");
+	MeshBuilder::GetInstance()->GetMesh("MENUSTATE_BG")->textureID = LoadTGA("Image//Menu.tga");
 	float halfWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
 	float halfHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
 	MenuStateBG = Create::Sprite2DObject("MENUSTATE_BG", Vector3(halfWidth, halfHeight, 0.0f), Vector3(800.f, 600.0f, 0.0f));
