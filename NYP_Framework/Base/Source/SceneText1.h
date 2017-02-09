@@ -14,6 +14,7 @@
 #include "Sound.h"
 #include <ctime>
 #include "Moving.h"
+#include "../SpriteEntity.h"
 
 class ShaderProgram;
 class SceneManager;
@@ -41,6 +42,7 @@ private:
 	Light* lights[2];
 	GenericEntity* theCube[5];
 	unsigned t0;
+	unsigned timepass;
 	string waveNo = "1";
 	int currWaveEnemy = 0;
 	unsigned  elasped = 0;
@@ -51,6 +53,10 @@ private:
 	int wave4;
 	int survive;
 	CEnemy* theEnemy;
+	SpriteEntity* volume;
+	bool ShowSettings = false;
+	Vector3 settingsScale;
+	float sound;
 	static SceneText1* sInstance; // The pointer to the object that gets registered
 };
 

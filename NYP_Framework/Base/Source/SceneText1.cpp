@@ -1,5 +1,6 @@
 #include "SceneText1.h"
 #include "GL\glew.h"
+#include <iomanip>
 
 #include "shader.hpp"
 #include "MeshBuilder.h"
@@ -354,6 +355,11 @@ void SceneText1::Init()
 	movingEnemy->WayPoints.push_back(Vector3(250, 0, 250));
 	movingEnemy->WayPoints.push_back(Vector3(-200, 0, 200));
 	movingEnemy->WayPoints.push_back(Vector3(100, 0, -250));
+	MeshBuilder::GetInstance()->GenerateQuad("VOLUME", Color(1, 1, 1), 1.f);
+	settingsScale.SetZero();
+	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "pictures");
+	MeshBuilder::GetInstance()->GetMesh("VOLUME")->textureID = LoadTGA(CLuaInterface::GetInstance()->GetStringField("game"));
+	volume = Create::Sprite2DObject("VOLUME", Vector3(0, 700, 0.0f), Vector3(500, 250, 0.0f));
 
 	EntityManager::GetInstance()->AddEntity(movingEnemy, true);
 	for (int i = 0; i < 2; i++)
@@ -383,7 +389,7 @@ void SceneText1::Init()
 	float fontSize = 25.0f;
 	float halfFontSize = fontSize / 2.0f;
 
-	for (int i = 0; i < 5; ++i)
+	for (int i = 2; i < 5; ++i)
 	{
 		textObj[i] = Create::Text2DObject("text", Vector3(-halfWindowWidth, -halfWindowHeight + fontSize*i + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f,1.0f,0.0f));
 	}
@@ -391,184 +397,260 @@ void SceneText1::Init()
 	{
 		textObj[j] = Create::Text2DObject("text", Vector3(-halfWindowWidth+600, -halfWindowHeight + fontSize*(j-5) + halfFontSize, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(0.0f, 1.0f, 0.0f));
 	}
+	textObj[0] = Create::Text2DObject("text", Vector3(-halfWindowWidth + 240, Application::GetInstance().GetWindowHeight() / 2 -200, 2.0f), "", Vector3(fontSize, fontSize, fontSize), Color(1.0f, 0.0f, 0.0f));
+	textObj[1] = Create::Text2DObject("text", Vector3(-halfWindowWidth + 300, Application::GetInstance().GetWindowHeight() / 2 - 250, 2.0f), "", Vector3(fontSize, fontSize, fontSize), Color(1.0f, 0.0f, 0.0f));
+
 	textObj[8] = Create::Text2DObject("text", Vector3(-halfWindowWidth + 80, Application::GetInstance().GetWindowHeight() / 2.5, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(1.0f, 0.0f, 0.0f));
 	textObj[9] = Create::Text2DObject("text", Vector3(-halfWindowWidth + 140, Application::GetInstance().GetWindowHeight() / 3.5, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(1.0f, 0.0f, 0.0f));
 	textObj[10] = Create::Text2DObject("text", Vector3(-halfWindowWidth + 140, Application::GetInstance().GetWindowHeight() / 3, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(1.0f, 0.0f, 0.0f));
 
 	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "music");
 	Sound::GetInstance()->playMusic(CLuaInterface::GetInstance()->GetStringField("BGM"));
+	sound = Sound::GetInstance()->getOnOff();
 }
 
 void SceneText1::Update(double dt)
 {
 	// Update our entities
-	EntityManager::GetInstance()->Update(dt);
-	movingEnemy->Update(dt,playerInfo->GetPos());
-	elasped = (clock() - t0) / CLOCKS_PER_SEC;
-	// THIS WHOLE CHUNK TILL <THERE> CAN REMOVE INTO ENTITIES LOGIC! Or maybe into a scene function to keep the update clean
-	/*if (KeyboardController::GetInstance()->IsKeyDown('1'))
-		glEnable(GL_CULL_FACE);
-	if (KeyboardController::GetInstance()->IsKeyDown('2'))
-		glDisable(GL_CULL_FACE);
-	if (KeyboardController::GetInstance()->IsKeyDown('3'))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	if (KeyboardController::GetInstance()->IsKeyDown('4'))
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);*/
-
-	/*if (KeyboardController::GetInstance()->IsKeyDown('5'))
+	if (KeyboardController::GetInstance()->IsKeyReleased('I'))
 	{
+		if (!ShowSettings)
+		{
+			ShowSettings = true;
+			timepass = (clock() - t0) / CLOCKS_PER_SEC;
+			elasped = timepass;
+		}
+		else if (ShowSettings)
+			ShowSettings = false;
+	}
+	std::ostringstream ss;
+	std::ostringstream ss2;
+
+	if (ShowSettings)
+	{
+		ss.precision(5);
+		ss << "Game paused";
+		ss2 << "Vol: " << std::setprecision(2) << Sound::GetInstance()->getOnOff();
+		volume->SetPosition(Vector3(0, 50, 0));
+		if (KeyboardController::GetInstance()->IsKeyDown(VK_LEFT))
+		{
+			sound -= dt;
+			Sound::GetInstance()->onOff(sound);
+		}
+		if (KeyboardController::GetInstance()->IsKeyDown(VK_RIGHT))
+		{
+			sound += dt;
+			Sound::GetInstance()->onOff(sound);
+		}
+		if (sound > 1)
+			sound = 1;
+		if (sound < 0)
+			sound = 0;
+	}
+	else if (!ShowSettings)
+	{
+		ss << " ";		ss2 << " ";
+
+		volume->SetPosition(Vector3(0, 700, 0));
+	}
+	textObj[0]->SetText(ss.str());
+	textObj[1]->SetText(ss2.str());
+
+	if (!ShowSettings)
+	{
+		EntityManager::GetInstance()->Update(dt);
+		movingEnemy->Update(dt, playerInfo->GetPos());
+		elasped = (clock() - t0) / CLOCKS_PER_SEC;
+		// THIS WHOLE CHUNK TILL <THERE> CAN REMOVE INTO ENTITIES LOGIC! Or maybe into a scene function to keep the update clean
+		/*if (KeyboardController::GetInstance()->IsKeyDown('1'))
+			glEnable(GL_CULL_FACE);
+			if (KeyboardController::GetInstance()->IsKeyDown('2'))
+			glDisable(GL_CULL_FACE);
+			if (KeyboardController::GetInstance()->IsKeyDown('3'))
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			if (KeyboardController::GetInstance()->IsKeyDown('4'))
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);*/
+
+		/*if (KeyboardController::GetInstance()->IsKeyDown('5'))
+		{
 		lights[0]->type = Light::LIGHT_POINT;
-	}
-	else if (KeyboardController::GetInstance()->IsKeyDown('6'))
-	{
+		}
+		else if (KeyboardController::GetInstance()->IsKeyDown('6'))
+		{
 		lights[0]->type = Light::LIGHT_DIRECTIONAL;
-	}
-	else if (KeyboardController::GetInstance()->IsKeyDown('7'))
-	{
+		}
+		else if (KeyboardController::GetInstance()->IsKeyDown('7'))
+		{
 		lights[0]->type = Light::LIGHT_SPOT;
-	}*/
-	if (elasped == wave1 && waveNo == "1")
-	{
-		for (int i = 0; i < 3; i++)
+		}*/
+		if (elasped == wave1 && waveNo == "1")
 		{
-			theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(-250, -240), 0.0f, Math::RandIntMinMax(-250, -240)), Vector3(Math::RandIntMinMax(-10, 10), 0.0f, Math::RandIntMinMax(-10, 10)), Math::RandFloatMinMax(5.f, 7.f), groundEntity);
-			theEnemy->SetNumOfFollowers(0);
+			for (int i = 0; i < 3; i++)
+			{
+				theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(-250, -240), 0.0f, Math::RandIntMinMax(-250, -240)), Vector3(Math::RandIntMinMax(-10, 10), 0.0f, Math::RandIntMinMax(-10, 10)), Math::RandFloatMinMax(5.f, 7.f), groundEntity);
+				theEnemy->SetNumOfFollowers(0);
+			}
+			waveNo = "1 ";
 		}
-		waveNo = "1 ";
-	}
 
-	if (elasped == wave2 && waveNo == "1 ")
-	{
-		waveNo = "2";
-	}
-	if (elasped == wave3 && waveNo == "2 ")
-	{
-		waveNo = "3";
-		currWaveEnemy = 0;
-	}
-	if (elasped == wave4 && waveNo == "3 ")
-	{
-		waveNo = "4";
-		currWaveEnemy = 0;
-	}
-
-	if (waveNo == "2")
-	{
-		for (currWaveEnemy; currWaveEnemy < 3;)
+		if (elasped == wave2 && waveNo == "1 ")
 		{
-			theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(250, 200), 0.0f, Math::RandIntMinMax(-200, -200)), Vector3(Math::RandIntMinMax(-25, 2), 0.0f, Math::RandIntMinMax(10, 0)), Math::RandFloatMinMax(4.f, 10.f), groundEntity);
-			theEnemy->SetNumOfFollowers(1);
-			currWaveEnemy++;
+			waveNo = "2";
 		}
+		if (elasped == wave3 && waveNo == "2 ")
+		{
+			waveNo = "3";
+			currWaveEnemy = 0;
+		}
+		if (elasped == wave4 && waveNo == "3 ")
+		{
+			waveNo = "4";
+			currWaveEnemy = 0;
+		}
+
+		if (waveNo == "2")
+		{
+			for (currWaveEnemy; currWaveEnemy < 3;)
+			{
+				theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(250, 200), 0.0f, Math::RandIntMinMax(-200, -200)), Vector3(Math::RandIntMinMax(-25, 2), 0.0f, Math::RandIntMinMax(10, 0)), Math::RandFloatMinMax(4.f, 10.f), groundEntity);
+				theEnemy->SetNumOfFollowers(1);
+				currWaveEnemy++;
+			}
 			waveNo = "2 ";
-	}
-	if (waveNo == "3")
-	{
-		for (currWaveEnemy; currWaveEnemy < 6;)
-		{
-			theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(-32, -35), 0.0f, Math::RandIntMinMax(-455, -400)), Vector3(Math::RandIntMinMax(-25, 2), 0.0f, Math::RandIntMinMax(10, 0)), Math::RandFloatMinMax(5.f, 15.f), groundEntity);
-			currWaveEnemy++;
 		}
-		waveNo = "3 ";
-	}
-	if (waveNo == "4")
-	{
-		for (currWaveEnemy; currWaveEnemy < 2;)
+		if (waveNo == "3")
 		{
-			theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(-32, -35), 0.0f, Math::RandIntMinMax(-455, -400)), Vector3(Math::RandIntMinMax(-25, 2), 0.0f, Math::RandIntMinMax(10, 0)), Math::RandFloatMinMax(2.f, 8.f), groundEntity);
-			theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(-250, -240), 0.0f, Math::RandIntMinMax(-250, -240)), Vector3(Math::RandIntMinMax(-10, 0), 0.0f, Math::RandIntMinMax(10, 0)), Math::RandFloatMinMax(5.f, 7.f), groundEntity);
-			theEnemy->SetNumOfFollowers(1);
-			theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(250, 200), 0.0f, Math::RandIntMinMax(-200, -200)), Vector3(Math::RandIntMinMax(-20, 2), 0.0f, Math::RandIntMinMax(10, 0)), Math::RandFloatMinMax(4.f, 10.f), groundEntity);
-			theEnemy->SetNumOfFollowers(2);
-			currWaveEnemy++;
+			for (currWaveEnemy; currWaveEnemy < 6;)
+			{
+				theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(-32, -35), 0.0f, Math::RandIntMinMax(-455, -400)), Vector3(Math::RandIntMinMax(-25, 2), 0.0f, Math::RandIntMinMax(10, 0)), Math::RandFloatMinMax(5.f, 15.f), groundEntity);
+				currWaveEnemy++;
+			}
+			waveNo = "3 ";
 		}
-		waveNo = "4 ";
-	}
+		if (waveNo == "4")
+		{
+			for (currWaveEnemy; currWaveEnemy < 2;)
+			{
+				theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(-32, -35), 0.0f, Math::RandIntMinMax(-455, -400)), Vector3(Math::RandIntMinMax(-25, 2), 0.0f, Math::RandIntMinMax(10, 0)), Math::RandFloatMinMax(2.f, 8.f), groundEntity);
+				theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(-250, -240), 0.0f, Math::RandIntMinMax(-250, -240)), Vector3(Math::RandIntMinMax(-10, 0), 0.0f, Math::RandIntMinMax(10, 0)), Math::RandFloatMinMax(5.f, 7.f), groundEntity);
+				theEnemy->SetNumOfFollowers(1);
+				theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(250, 200), 0.0f, Math::RandIntMinMax(-200, -200)), Vector3(Math::RandIntMinMax(-20, 2), 0.0f, Math::RandIntMinMax(10, 0)), Math::RandFloatMinMax(4.f, 10.f), groundEntity);
+				theEnemy->SetNumOfFollowers(2);
+				currWaveEnemy++;
+			}
+			waveNo = "4 ";
+		}
 
-	if (elasped >= survive)
-	{
-		waveNo = "WIN";
-		SceneManager::GetInstance()->SetActiveScene("MenuState");
-		Sound::GetInstance()->stopMusic("Music//Background.mp3");
-	}
+		if (elasped >= survive)
+		{
+			waveNo = "WIN";
+			SceneManager::GetInstance()->SetActiveScene("MenuState");
+			Sound::GetInstance()->stopMusic("Music//Background.mp3");
+		}
 		if (playerInfo->playerHealth <= 0)
-		waveNo = "LOSE";
+			waveNo = "LOSE";
 
-	/*if (KeyboardController::GetInstance()->IsKeyDown('I'))
-		lights[0]->position.z -= (float)(10.f * dt);
-	if (KeyboardController::GetInstance()->IsKeyDown('K'))
-		lights[0]->position.z += (float)(10.f * dt);
-	if (KeyboardController::GetInstance()->IsKeyDown('J'))
-		lights[0]->position.x -= (float)(10.f * dt);
-	if (KeyboardController::GetInstance()->IsKeyDown('L'))
-		lights[0]->position.x += (float)(10.f * dt);
-	if (KeyboardController::GetInstance()->IsKeyDown('O'))
-		lights[0]->position.y -= (float)(10.f * dt);
-	if (KeyboardController::GetInstance()->IsKeyDown('P'))
-		lights[0]->position.y += (float)(10.f * dt);*/
 
-	if (KeyboardController::GetInstance()->IsKeyReleased('M'))
-	{
-		CSceneNode* theNode = CSceneGraph::GetInstance()->GetNode(1);
-		if (theNode != NULL)
+
+		//}
+
+		/*if (KeyboardController::GetInstance()->IsKeyDown('I'))
+			lights[0]->position.z -= (float)(10.f * dt);
+			if (KeyboardController::GetInstance()->IsKeyDown('K'))
+			lights[0]->position.z += (float)(10.f * dt);
+			if (KeyboardController::GetInstance()->IsKeyDown('J'))
+			lights[0]->position.x -= (float)(10.f * dt);
+			if (KeyboardController::GetInstance()->IsKeyDown('L'))
+			lights[0]->position.x += (float)(10.f * dt);
+			if (KeyboardController::GetInstance()->IsKeyDown('O'))
+			lights[0]->position.y -= (float)(10.f * dt);
+			if (KeyboardController::GetInstance()->IsKeyDown('P'))
+			lights[0]->position.y += (float)(10.f * dt);*/
+
+		if (KeyboardController::GetInstance()->IsKeyReleased('M'))
 		{
-			Vector3 pos = theNode->GetEntity()->GetPosition();
-			theNode->GetEntity()->SetPosition(Vector3(pos.x + 40.0f, pos.y, pos.z + 40.0f));
+			CSceneNode* theNode = CSceneGraph::GetInstance()->GetNode(1);
+			if (theNode != NULL)
+			{
+				Vector3 pos = theNode->GetEntity()->GetPosition();
+				theNode->GetEntity()->SetPosition(Vector3(pos.x + 40.0f, pos.y, pos.z + 40.0f));
+			}
 		}
-	}
-	if (KeyboardController::GetInstance()->IsKeyReleased('N'))
-	{
-		CSpatialPartition::GetInstance()->PrintSelf();
-	}
+		if (KeyboardController::GetInstance()->IsKeyReleased('N'))
+		{
+			CSpatialPartition::GetInstance()->PrintSelf();
+		}
 
-	// if the left mouse button was released
-	if (MouseController::GetInstance()->IsButtonReleased(MouseController::LMB))
-	{
-		cout << "Left Mouse Button was released!" << endl;
-	}
-	if (MouseController::GetInstance()->IsButtonReleased(MouseController::RMB))
-	{
-		cout << "Right Mouse Button was released!" << endl;
-	}
-	if (MouseController::GetInstance()->IsButtonReleased(MouseController::MMB))
-	{
-		cout << "Middle Mouse Button was released!" << endl;
-	}
-	if (MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_XOFFSET) != 0.0)
-	{
-		cout << "Mouse Wheel has offset in X-axis of " << MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_XOFFSET) << endl;
-	}
-	if (MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_YOFFSET) != 0.0)
-	{
-		cout << "Mouse Wheel has offset in Y-axis of " << MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_YOFFSET) << endl;
-	}
-	// <THERE>
+		// if the left mouse button was released
+		if (MouseController::GetInstance()->IsButtonReleased(MouseController::LMB))
+		{
+			cout << "Left Mouse Button was released!" << endl;
+		}
+		if (MouseController::GetInstance()->IsButtonReleased(MouseController::RMB))
+		{
+			cout << "Right Mouse Button was released!" << endl;
+		}
+		if (MouseController::GetInstance()->IsButtonReleased(MouseController::MMB))
+		{
+			cout << "Middle Mouse Button was released!" << endl;
+		}
+		if (MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_XOFFSET) != 0.0)
+		{
+			cout << "Mouse Wheel has offset in X-axis of " << MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_XOFFSET) << endl;
+		}
+		if (MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_YOFFSET) != 0.0)
+		{
+			cout << "Mouse Wheel has offset in Y-axis of " << MouseController::GetInstance()->GetMouseScrollStatus(MouseController::SCROLL_TYPE_YOFFSET) << endl;
+		}
+		// <THERE>
 
-	// Update the player position and other details based on keyboard and mouse inputs
-	playerInfo->Update(dt);
-
+		// Update the player position and other details based on keyboard and mouse inputs
+		playerInfo->Update(dt);
+	}
 	//camera.Update(dt); // Can put the camera into an entity rather than here (Then we don't have to write this)
 
 	GraphicsManager::GetInstance()->UpdateLights(dt);
 	// Update the 2 text object values. NOTE: Can do this in their own class but i'm lazy to do it now :P
 	// Eg. FPSRenderEntity or inside RenderUI for LightEntity
-	std::ostringstream ss;
-	ss.precision(5);
-	float fps = (float)(1.f / dt);
-	ss << "Vol: " << Sound::GetInstance()->getOnOff();
-	textObj[0]->SetText(ss.str());
+	
+	/*ss1.str("");
+	ss1 << "Enemies: " << theEnemy->GetEnemyCount();
+	textObj[5]->SetText(ss1.str());*/
 
+}
+
+void SceneText1::Render()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	GraphicsManager::GetInstance()->UpdateLightUniforms();
+	//theEnemy->Render();
+	// Setup 3D pipeline then render 3D
+	GraphicsManager::GetInstance()->SetPerspectiveProjection(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
+	GraphicsManager::GetInstance()->AttachCamera(&camera);
+	EntityManager::GetInstance()->Render();
+
+	if (playerInfo->GetWeaponType() == CPlayerInfo::WT_PISTOL)
+	{
+		playerInfo->Render("m24r");
+	}
+	else if (playerInfo->GetWeaponType() == CPlayerInfo::WT_GUN)
+	{
+		playerInfo->Render("mp5k");
+	}
+	
+	std::ostringstream ss;
 	ss.str("");
 	ss << "Health: " << playerInfo->playerHealth;
-	textObj[1]->SetText(ss.str());
+	textObj[2]->SetText(ss.str());
 
 	ss.str("");
 	ss << "Score: " << playerInfo->playerScore;
-	textObj[2]->SetText(ss.str());
+	textObj[3]->SetText(ss.str());
 
 	std::ostringstream ss1;
 	ss1.precision(10);
-	
+
 	ss1.str("");
 	ss1 << playerInfo->GetWeaponName();
 	textObj[5]->SetText(ss1.str());
@@ -626,31 +708,6 @@ void SceneText1::Update(double dt)
 		ss1.str("");
 		ss1 << "You lost!";
 		textObj[10]->SetText(ss1.str());
-	}
-	/*ss1.str("");
-	ss1 << "Enemies: " << theEnemy->GetEnemyCount();
-	textObj[5]->SetText(ss1.str());*/
-
-}
-
-void SceneText1::Render()
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	GraphicsManager::GetInstance()->UpdateLightUniforms();
-	//theEnemy->Render();
-	// Setup 3D pipeline then render 3D
-	GraphicsManager::GetInstance()->SetPerspectiveProjection(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
-	GraphicsManager::GetInstance()->AttachCamera(&camera);
-	EntityManager::GetInstance()->Render();
-
-	if (playerInfo->GetWeaponType() == CPlayerInfo::WT_PISTOL)
-	{
-		playerInfo->Render("m24r");
-	}
-	else if (playerInfo->GetWeaponType() == CPlayerInfo::WT_GUN)
-	{
-		playerInfo->Render("mp5k");
 	}
 	// Setup 2D pipeline then render 2D
 	int halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2;

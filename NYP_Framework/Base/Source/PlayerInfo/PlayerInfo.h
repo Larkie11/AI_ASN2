@@ -142,4 +142,5 @@ private:
 	char MoveLEFT;
 	char MoveRIGHT;
 	char MoveDOWN;
+	char Reload;
 };

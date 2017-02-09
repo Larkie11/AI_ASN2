@@ -26,10 +26,14 @@ height = 600
 position = {100,0,130}
 playerstats = {health = 100, score = 0, weaponType = 1}
 waves = {wave1 = 45,wave2 = 65, wave3 = 80, wave4 = 130, survive = 150}
+Reload = "S";
 UP = "Z";
 LEFT = "X";
 RIGHT = "C";
 DOWN = "V";
+robotse = "Music//Robot.mp3"
+robotdie = "Music//RobotDie.mp3"
 pictures = {menupic = "Image//Menu.tga", menulogo = "Image//Logo.tga", menuarrow = "Image//Arrow.tga",
-instructpic = "Image//InstructionsPage.tga", instructlogo = "Image//Instructions.tga"}
-pistolinfo = {maground = 8, maxmaground = 8, totalround = 40, maxtotalround = 40, timebetween = 0.2, se = "Music//Mining.mp3" }
+instructpic = "Image//InstructionsPage.tga", instructlogo = "Image//Instructions.tga", game = "Image//InGame.tga"}
+shotguninfo = {maground = 10,maxmaground = 10, totalround = 70, maxtotalround = 70, timebetween = 0.5, se = "Music//Mining.mp3"}
+pistolinfo = {maground = 8, maxmaground = 8, totalround = 40, maxtotalround = 40, timebetween = 0.2, se = "Music//Mining.mp3"}

@@ -6,7 +6,6 @@
 #include "Vector3.h"
 #include "SpatialPartition\SpatialPartition.h"
 #include "Enemy\Enemy.h"
-#include "Sound.h"
 
 class EntityBase;
 
@@ -28,7 +27,6 @@ private:
 	EntityManager();
 	virtual ~EntityManager();
 
-	Sound sound;
 	// Check for overlap
 	bool CheckOverlap(Vector3 thisMinAABB, Vector3 thisMaxAABB, Vector3 thatMinAABB, Vector3 thatMaxAABB);
 	// Check if this entity's bounding sphere collided with that entity's bounding sphere 

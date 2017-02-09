@@ -5,6 +5,8 @@
 #include "SceneGraph\SceneGraph.h"
 #include "PlayerInfo\PlayerInfo.h"
 #include "Enemy\Enemy.h"
+#include "Sound.h"
+#include "../Lua/LuaInterface.h"
 
 #include <iostream>
 using namespace std;
@@ -332,6 +334,7 @@ bool EntityManager::CheckForCollision(void)
 	std::list<EntityBase*>::iterator colliderThis, colliderThisEnd;
 	std::list<EntityBase*>::iterator colliderThat, colliderThatEnd;
 
+
 	colliderThisEnd = entityList.end();
 	for (colliderThis = entityList.begin(); colliderThis != colliderThisEnd; ++colliderThis)
 	{
@@ -417,7 +420,7 @@ bool EntityManager::CheckForCollision(void)
 								{
 									if (thisEntity->GetIsCamp() == "Camp")
 									{
-										sound.playSE("Music//Robot.mp3");
+										Sound::GetInstance()->playSE(CLuaInterface::GetInstance()->getStringtValue("robotse"));
 										thatEntity->SetIsDone(true);
 										if (CPlayerInfo::GetInstance()->playerHealth > 0)
 										{
@@ -426,7 +429,7 @@ bool EntityManager::CheckForCollision(void)
 									}
 									else if (thatEntity->GetIsCamp() == "Camp")
 									{
-										sound.playSE("Music//Robot.mp3");
+										Sound::GetInstance()->playSE(CLuaInterface::GetInstance()->getStringtValue("robotse"));
 										thisEntity->SetIsDone(true);
 										if (CPlayerInfo::GetInstance()->playerHealth > 0)
 										{
@@ -435,7 +438,7 @@ bool EntityManager::CheckForCollision(void)
 									}
 									else
 									{
-										sound.playSE("Music//RobotDie.mp3");
+										Sound::GetInstance()->playSE(CLuaInterface::GetInstance()->getStringtValue("robotdie"));
 										thatEntity->SetIsDone(true);
 										thisEntity->SetIsDone(true);
 										CPlayerInfo::GetInstance()->playerScore++;

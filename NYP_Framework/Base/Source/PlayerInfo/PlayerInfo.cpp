@@ -38,6 +38,7 @@ CPlayerInfo::CPlayerInfo(void)
 , MoveRIGHT('D')
 , MoveUP('W')
 , MoveDOWN('S')
+, Reload('R')
 
 {
 	target.SetZero();
@@ -102,7 +103,7 @@ void CPlayerInfo::Init(void)
 	//secondaryWeapon->Init();
 	secondaryWeapon = new CGrenadeThrow();
 	secondaryWeapon->Init();
-
+	Reload = CLuaInterface::GetInstance()->getCharValue("Reload");
 	MoveLEFT = CLuaInterface::GetInstance()->getCharValue("LEFT");
 	MoveRIGHT = CLuaInterface::GetInstance()->getCharValue("RIGHT");
 	MoveDOWN = CLuaInterface::GetInstance()->getCharValue("DOWN");
@@ -518,7 +519,7 @@ void CPlayerInfo::Update(double dt)
 		changeWeapon = false;
 	}
 	// Update the weapons
-	if (KeyboardController::GetInstance()->IsKeyReleased('R'))
+	if (KeyboardController::GetInstance()->IsKeyReleased(Reload))
 	{
 		if (primaryWeapon)
 		{
@@ -532,7 +533,7 @@ void CPlayerInfo::Update(double dt)
 		}
 	}
 	if (primaryWeapon)
-		primaryWeapon->Update(dt);
+		primaryWeapon->Update(dt); 
 	if (secondaryWeapon)
 		secondaryWeapon->Update(dt);
 

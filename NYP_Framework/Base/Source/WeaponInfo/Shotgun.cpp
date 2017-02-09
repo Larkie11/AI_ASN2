@@ -1,5 +1,5 @@
 #include "Shotgun.h"
-
+#include "../Lua/LuaInterface.h"
 
 CShotGun::CShotGun()
 {
@@ -15,19 +15,19 @@ void CShotGun::Init(void)
 {
 	// Call the parent's Init method
 	CWeaponInfo::Init();
+	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "shotguninfo");
 
 	// The number of ammunition in a magazine for this weapon
-	magRounds = 5;
+	magRounds = CLuaInterface::GetInstance()->GetField("maground");
 	// The maximum number of ammunition for this magazine for this weapon
-	maxMagRounds = 5;
+	maxMagRounds = CLuaInterface::GetInstance()->GetField("maxmaground");
 	// The current total number of rounds currently carried by this player
-	totalRounds = 20;
+	totalRounds = CLuaInterface::GetInstance()->GetField("totalround");
 	// The max total number of rounds currently carried by this player
-	maxTotalRounds = 20;
-
+	maxTotalRounds = CLuaInterface::GetInstance()->GetField("maxtotalround");
+	soundeffect = CLuaInterface::GetInstance()->GetStringField("se");
 	// The time between shots
-	timeBetweenShots = 1.4;
-	soundeffect = "Music//Mining.mp3";
+	timeBetweenShots = CLuaInterface::GetInstance()->GetField("timebetween");
 	// The elapsed time (between shots)
 	elapsedTime = 1.0;
 	// Boolean flag to indicate if weapon can fire now
