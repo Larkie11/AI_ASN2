@@ -19,6 +19,7 @@ using namespace std;
 #include <sstream>
 #include "../Sound.h"
 #include "MyMath.h"
+#include "../Lua/LuaInterface.h"
 
 CSettings::CSettings()
 {
@@ -38,19 +39,20 @@ void CSettings::Init()
 	settingypos = 600;
 
 	MeshBuilder::GetInstance()->GenerateQuad("MENUSTATE_BG", Color(1, 1, 1), 1.f);
-	MeshBuilder::GetInstance()->GetMesh("MENUSTATE_BG")->textureID = LoadTGA("Image//Settings.tga");
+	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "pictures");
+	MeshBuilder::GetInstance()->GetMesh("MENUSTATE_BG")->textureID = LoadTGA(CLuaInterface::GetInstance()->GetStringField("settings"));
 	float halfWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
 	float halfHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
 	MenuStateBG = Create::Sprite2DObject("MENUSTATE_BG", Vector3(halfWidth, halfHeight, 0.0f), Vector3(800.f, 600.0f, 0.0f));
 	
 	MeshBuilder::GetInstance()->GenerateQuad("SETTINGS", Color(1, 1, 1), 1.f);
-	MeshBuilder::GetInstance()->GetMesh("SETTINGS")->textureID = LoadTGA("Image//SettingsLogo.tga");
+	MeshBuilder::GetInstance()->GetMesh("SETTINGS")->textureID = LoadTGA(CLuaInterface::GetInstance()->GetStringField("settingslogo"));
 	Settings = Create::Sprite2DObject("SETTINGS", Vector3(270, settingypos, 0.1f), Vector3(450, 100, 0.0f));
 
 	
-	MeshBuilder::GetInstance()->GetMesh("quad")->textureID = LoadTGA("Image//calibri.tga");
+	MeshBuilder::GetInstance()->GetMesh("quad")->textureID = LoadTGA(CLuaInterface::GetInstance()->GetStringField("text"));
 	MeshBuilder::GetInstance()->GenerateText("text", 16, 16);
-	MeshBuilder::GetInstance()->GetMesh("text")->textureID = LoadTGA("Image//calibri.tga");
+	MeshBuilder::GetInstance()->GetMesh("text")->textureID = LoadTGA(CLuaInterface::GetInstance()->GetStringField("text"));
 	MeshBuilder::GetInstance()->GetMesh("text")->material.kAmbient.Set(1, 0, 0);
 	float windowWidth = Application::GetInstance().GetWindowWidth();
 	float windowHeight = Application::GetInstance().GetWindowHeight();

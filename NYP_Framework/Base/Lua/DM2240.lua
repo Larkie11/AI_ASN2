@@ -31,9 +31,14 @@ UP = "Z";
 LEFT = "X";
 RIGHT = "C";
 DOWN = "V";
+WP1 = {x = 300, y = 0, z = 300}
+WP2 = {x = 250, y = 0, z = 250}
+WP3 = {x = -200, y = 0, z = 200}
+WP4 = {x = 100, y = 0, z = -250}
 robotse = "Music//Robot.mp3"
 robotdie = "Music//RobotDie.mp3"
-pictures = {menupic = "Image//Menu.tga", menulogo = "Image//Logo.tga", menuarrow = "Image//Arrow.tga",
-instructpic = "Image//InstructionsPage.tga", instructlogo = "Image//Instructions.tga", game = "Image//InGame.tga"}
+pictures = {splash = "Image//Splash.tga",menupic = "Image//Menu.tga", menulogo = "Image//Logo.tga", menuarrow = "Image//Arrow.tga", text = "Image//calibri.tga",
+instructpic = "Image//InstructionsPage.tga", instructlogo = "Image//Instructions.tga", game = "Image//InGame.tga", settings = "Image//Settings.tga", settingslogo = "Image//SettingsLogo.tga"}
+texts = {introtext = "Press <SPACE>",menutext1 = "PLAY", menutext2 = "INSTRUCTIONS", menutext3 = "SETTINGS", menutext4 = "QUIT", loading = "LOADING GAME", instruction1 = "MOVEMENT KEYS", instruction2 = "Left key: ", instruction3 = "Right key: ", instruction4 = "Up key: ", instruction5 = "Down key: "}
 shotguninfo = {maground = 10,maxmaground = 10, totalround = 70, maxtotalround = 70, timebetween = 0.5, se = "Music//Mining.mp3"}
 pistolinfo = {maground = 8, maxmaground = 8, totalround = 40, maxtotalround = 40, timebetween = 0.2, se = "Music//Mining.mp3"}

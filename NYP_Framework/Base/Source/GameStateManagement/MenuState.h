@@ -43,4 +43,5 @@ private:
 	float arrowypos;
 	States currState;
 	int myState;
+	string music;
 };

@@ -48,9 +48,9 @@ void CInstructions::Init()
 	float halfWidth = Application::GetInstance().GetWindowWidth() / 2.0f;
 	float halfHeight = Application::GetInstance().GetWindowHeight() / 2.0f;
 	MenuStateBG = Create::Sprite2DObject("MENUSTATE_BG", Vector3(halfWidth, halfHeight, 0.0f), Vector3(800.f, 600.0f, 0.0f));
-	MeshBuilder::GetInstance()->GetMesh("quad")->textureID = LoadTGA("Image//calibri.tga");
+	MeshBuilder::GetInstance()->GetMesh("quad")->textureID = LoadTGA(CLuaInterface::GetInstance()->GetStringField("text"));
 	MeshBuilder::GetInstance()->GenerateText("text", 16, 16);
-	MeshBuilder::GetInstance()->GetMesh("text")->textureID = LoadTGA("Image//calibri.tga");
+	MeshBuilder::GetInstance()->GetMesh("text")->textureID = LoadTGA(CLuaInterface::GetInstance()->GetStringField("text"));
 	MeshBuilder::GetInstance()->GetMesh("text")->material.kAmbient.Set(1, 0, 0);
 	MeshBuilder::GetInstance()->GenerateQuad("LOGO", Color(1, 1, 1), 1.f);
 	MeshBuilder::GetInstance()->GetMesh("LOGO")->textureID = LoadTGA(CLuaInterface::GetInstance()->GetStringField("instructlogo"));
@@ -64,6 +64,8 @@ void CInstructions::Init()
 		textObj[i] = Create::Text2DObject("text", Vector3(textObj[i-1]->GetPosition().x, textObj[i-1]->GetPosition().y - 30, 2.0f), "", Vector3(30, 30, 1), Color(1.0f, 0.0f, 0.0f));
 	}
 	showLoading = false;
+	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "texts");
+
 	cout << "Menu loaded\n" << endl;
 }
 void CInstructions::Update(double dt)
@@ -94,19 +96,19 @@ void CInstructions::Render()
 		
 	}
 	ss.str("");
-	ss << "MOVEMENT KEYS";
+	ss << CLuaInterface::GetInstance()->GetStringField("instruction1");
 	textObj[0]->SetText(ss.str());
 	ss.str("");
-	ss << "Left key: " << left;
+	ss << CLuaInterface::GetInstance()->GetStringField("instruction2")<< left;
 	textObj[1]->SetText(ss.str());
 	ss.str("");
-	ss << "Right key: " << right;
+	ss << CLuaInterface::GetInstance()->GetStringField("instruction3") << right;
 	textObj[2]->SetText(ss.str());
 	ss.str("");
-	ss << "Up key: " << up;
+	ss << CLuaInterface::GetInstance()->GetStringField("instruction4") << up;
 	textObj[3]->SetText(ss.str());
 	ss.str("");
-	ss << "Down key: " << down;
+	ss << CLuaInterface::GetInstance()->GetStringField("instruction5") << down;
 	textObj[4]->SetText(ss.str());
 	GraphicsManager::GetInstance()->SetOrthographicProjection(0, Application::GetInstance().GetWindowWidth(), 0, Application::GetInstance().GetWindowHeight(), -10, 10);
 	GraphicsManager::GetInstance()->DetachCamera();

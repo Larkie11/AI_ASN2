@@ -351,10 +351,14 @@ void SceneText1::Init()
 	
 	movingEnemy = new Moving();
 	movingEnemy->Init();
-	movingEnemy->WayPoints.push_back(Vector3(300, 0, 300));
-	movingEnemy->WayPoints.push_back(Vector3(250, 0, 250));
-	movingEnemy->WayPoints.push_back(Vector3(-200, 0, 200));
-	movingEnemy->WayPoints.push_back(Vector3(100, 0, -250));
+	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "WP1");
+	movingEnemy->WayPoints.push_back(Vector3(CLuaInterface::GetInstance()->GetField("x"), CLuaInterface::GetInstance()->GetField("y"), CLuaInterface::GetInstance()->GetField("z")));
+	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "WP2");
+	movingEnemy->WayPoints.push_back(Vector3(CLuaInterface::GetInstance()->GetField("x"), CLuaInterface::GetInstance()->GetField("y"), CLuaInterface::GetInstance()->GetField("z")));
+	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "WP3");
+	movingEnemy->WayPoints.push_back(Vector3(CLuaInterface::GetInstance()->GetField("x"), CLuaInterface::GetInstance()->GetField("y"), CLuaInterface::GetInstance()->GetField("z")));
+	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "WP4");
+	movingEnemy->WayPoints.push_back(Vector3(CLuaInterface::GetInstance()->GetField("x"), CLuaInterface::GetInstance()->GetField("y"), CLuaInterface::GetInstance()->GetField("z")));
 	MeshBuilder::GetInstance()->GenerateQuad("VOLUME", Color(1, 1, 1), 1.f);
 	settingsScale.SetZero();
 	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "pictures");
@@ -417,8 +421,11 @@ void SceneText1::Update(double dt)
 		if (!ShowSettings)
 		{
 			ShowSettings = true;
-			timepass = (clock() - t0) / CLOCKS_PER_SEC;
-			elasped = timepass;
+			wave1 += elasped;
+			wave2 += elasped;
+			wave3 += elasped;
+			wave4 += elasped;
+			survive += elasped;
 		}
 		else if (ShowSettings)
 			ShowSettings = false;

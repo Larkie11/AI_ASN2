@@ -73,8 +73,10 @@ void CMenuState::Init()
 	if (!Sound::GetInstance()->isPlayingMenu())
 	{
 		Sound::GetInstance()->setPlayingMenu(true);
-		Sound::GetInstance()->playMusic(CLuaInterface::GetInstance()->GetStringField("Menu"));
+		music = CLuaInterface::GetInstance()->GetStringField("Menu");
+		Sound::GetInstance()->playMusic(music);
 	}
+	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "texts");
 }
 void CMenuState::Update(double dt)
 {
@@ -109,7 +111,7 @@ void CMenuState::Update(double dt)
 		{
 			cout << "Loading CMenuState" << endl;
 			showLoading = true;
-			Sound::GetInstance()->stopMusic(CLuaInterface::GetInstance()->GetStringField("Menu"));
+			Sound::GetInstance()->stopMusic(music);
 			Sound::GetInstance()->setPlayingMenu(false);
 			SceneManager::GetInstance()->SetActiveScene("GameState1");
 		}
@@ -160,21 +162,22 @@ void CMenuState::Render()
 	EntityManager::GetInstance()->Render();
 	std::ostringstream ss;
 	ss.str("");
-	ss << "PLAY";
+	ss << CLuaInterface::GetInstance()->GetStringField("menutext1");
 	textObj[0]->SetText(ss.str());
 	ss.str("");
-	ss << "INSTRUCTIONS";
+	ss << CLuaInterface::GetInstance()->GetStringField("menutext2");
 	textObj[1]->SetText(ss.str());
 	ss.str("");
-	ss << "SETTINGS";
+	ss << CLuaInterface::GetInstance()->GetStringField("menutext3");
 	textObj[2]->SetText(ss.str());
 	ss.str("");
-	ss << "QUIT";
+	ss << CLuaInterface::GetInstance()->GetStringField("menutext4");
 	textObj[3]->SetText(ss.str());
+
 	if (showLoading)
 	{
 		ss.str("");
-		ss << "LOADING GAME";
+		ss << CLuaInterface::GetInstance()->GetStringField("loading");
 		textObj[5]->SetText(ss.str());
 	}
 

@@ -11,7 +11,7 @@ using namespace std;
 #include "RenderHelper.h"
 #include "../SpriteEntity.h"
 #include "../EntityManager.h"
-
+#include "../Lua/LuaInterface.h"
 #include "KeyboardController.h"
 #include "SceneManager.h"
 #include <sstream>
@@ -33,12 +33,12 @@ void CIntroState::Init()
 	GraphicsManager::GetInstance()->AttachCamera(&camera);
 
 	MeshBuilder::GetInstance()->GenerateQuad("INTROSTATE_BG", Color(1, 1, 1), 1.f);
-	MeshBuilder::GetInstance()->GetMesh("INTROSTATE_BG")->textureID = LoadTGA("Image//Splash.tga");
+	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "pictures");
+	MeshBuilder::GetInstance()->GetMesh("INTROSTATE_BG")->textureID = LoadTGA(CLuaInterface::GetInstance()->GetStringField("splash"));
 	MeshBuilder::GetInstance()->GenerateQuad("quad", Color(1, 1, 1), 1.f);
-
-	MeshBuilder::GetInstance()->GetMesh("quad")->textureID = LoadTGA("Image//calibri.tga");
+	MeshBuilder::GetInstance()->GetMesh("quad")->textureID = LoadTGA(CLuaInterface::GetInstance()->GetStringField("text"));
 	MeshBuilder::GetInstance()->GenerateText("text", 16, 16);
-	MeshBuilder::GetInstance()->GetMesh("text")->textureID = LoadTGA("Image//calibri.tga");
+	MeshBuilder::GetInstance()->GetMesh("text")->textureID = LoadTGA(CLuaInterface::GetInstance()->GetStringField("text"));
 	MeshBuilder::GetInstance()->GetMesh("text")->material.kAmbient.Set(1, 0, 0);
 	float windowWidth = Application::GetInstance().GetWindowWidth();
 	float windowHeight = Application::GetInstance().GetWindowHeight();
@@ -49,6 +49,7 @@ void CIntroState::Init()
 	textObj[1] = Create::Text2DObject("text", Vector3(windowWidth*0.13, textObj[0]->GetPosition().y - 30, 2.0f), "", Vector3(30, 30, 1), Color(1.0f, 0.0f, 0.0f));
 
 	toNextScene = 5.f;
+	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "texts");
 
 }
 void CIntroState::Update(double dt)
@@ -75,7 +76,7 @@ void CIntroState::Render()
 
 	std::ostringstream ss;
 	ss.str("");
-	ss << "Press <SPACE>";
+	ss << CLuaInterface::GetInstance()->GetStringField("introtext");
 	textObj[0]->SetText(ss.str());
 
 	ss.str("");
