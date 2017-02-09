@@ -58,6 +58,7 @@ void EntityManager::Render()
 	end = entityList.end();
 	for (it = entityList.begin(); it != end; ++it)
 	{
+		if (*it != NULL)
 		(*it)->Render();
 	}
 
@@ -66,7 +67,7 @@ void EntityManager::Render()
 
 	// Render the Spatial Partition
 	if (theSpatialPartition)
-		theSpatialPartition->Render();
+		theSpatialPartition->Render(); 
 }
 
 // Render the UI entities
@@ -77,6 +78,7 @@ void EntityManager::RenderUI()
 	end = entityList.end();
 	for (it = entityList.begin(); it != end; ++it)
 	{
+		if (*it != NULL)
 		(*it)->RenderUI();
 	}
 }
@@ -90,7 +92,21 @@ void EntityManager::AddEntity(EntityBase* _newEntity, bool bAddToSpatialPartitio
 	if (theSpatialPartition && bAddToSpatialPartition)
 		theSpatialPartition->Add(_newEntity);
 }
-
+void EntityManager::RemoveAll()
+{
+	std::list<EntityBase*>::iterator it, end;
+	end = entityList.end();
+	for (it = entityList.begin(); it != end; ++it)
+	{
+		if (*it == NULL)
+			continue;
+		else
+		{
+			delete *it;
+			*it = 0;
+		}
+	}
+}
 // Remove an entity from this EntityManager
 bool EntityManager::RemoveEntity(EntityBase* _existingEntity)
 {

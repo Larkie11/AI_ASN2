@@ -75,7 +75,6 @@ void Moving::Update(double dt, Vector3 playerpos)
 		dir3 = (playerpos - position).Normalize();
 		position = position + dir3* 0.7;
 	}
-	std::cout << position << " " << (playerpos - position).LengthSquared() << std::endl;
 }
 void Moving::Render(void)
 {

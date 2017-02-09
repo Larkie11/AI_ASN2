@@ -61,7 +61,7 @@ void CMenuState::Init()
 	float windowWidth = Application::GetInstance().GetWindowWidth();
 	float windowHeight = Application::GetInstance().GetWindowHeight();
 	textObj[0] = Create::Text2DObject("text", Vector3(windowWidth*0.2, windowHeight *0.5, 2.0f), "", Vector3(30, 30, 1), Color(1.0f, 0.0f, 0.0f));
-	for (int i = 1; i < 4; i++)
+	for (int i = 1; i <= 4; i++)
 	{
 		textObj[i] = Create::Text2DObject("text", Vector3(windowWidth*0.2, textObj[i - 1]->GetPosition().y - 30, 2.0f), "", Vector3(30, 30, 1), Color(1.0f, 0.0f, 0.0f));
 	}
@@ -132,6 +132,15 @@ void CMenuState::Update(double dt)
 			SceneManager::GetInstance()->SetActiveScene("SettingsState");
 		}
 		break;
+	case HIGHSCORE:
+	{
+					 if (KeyboardController::GetInstance()->IsKeyReleased(VK_SPACE))
+					  {
+						  cout << "Loading CMenuState" << endl;
+						  showLoading = true;
+						  SceneManager::GetInstance()->SetActiveScene("HighscoreState");
+					  }
+	}
 	case QUIT:		
 		break;
 	case MAX_STATES:
@@ -173,7 +182,9 @@ void CMenuState::Render()
 	ss.str("");
 	ss << CLuaInterface::GetInstance()->GetStringField("menutext4");
 	textObj[3]->SetText(ss.str());
-
+	ss.str("");
+	ss << CLuaInterface::GetInstance()->GetStringField("menutext5");
+	textObj[4]->SetText(ss.str());
 	if (showLoading)
 	{
 		ss.str("");

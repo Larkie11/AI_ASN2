@@ -36,7 +36,17 @@ bool CLuaInterface::Init()
 
 		result = true;
 	}
+	highScoreState = lua_open();
+	if (highScoreState)
+	{
+		// 2. Load lua auxiliary libraries
+		luaL_openlibs(highScoreState);
 
+		// 3. Load lua script
+		luaL_dofile(highScoreState, "Lua//DM2240_Highscore.lua");
+
+		result = true;
+	}
 	theErrorState = lua_open();
 	if ((theLuaState) && (theErrorState))
 	{
@@ -97,7 +107,11 @@ float CLuaInterface::getFloatValue(const char* varName)
 	lua_getglobal(theLuaState, varName);
 	return (float)lua_tonumber(theLuaState, -1);
 }
-
+float CLuaInterface::GetScore(const char* varName)
+{
+	lua_getglobal(highScoreState, varName);
+	return (float)lua_tonumber(highScoreState, -1);
+}
 // Get a char value through the Lua Interface Class
 char CLuaInterface::getCharValue(const char* varName)
 {

@@ -1,2 +1,1 @@
-Player1 = 9.0001
-Player2 = 100
+Player1 = 2.0000

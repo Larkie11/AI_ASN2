@@ -37,7 +37,6 @@ CEnemy::CEnemy() : GenericEntity(NULL)
 
 CEnemy::~CEnemy()
 {
-
 }
 void CEnemy::Init(const Vector3& _position,
 	const Vector3& _target,

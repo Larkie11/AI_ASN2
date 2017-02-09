@@ -7,6 +7,8 @@
 #include "GameStateManagement\MenuState.h"
 #include "GameStateManagement\Settings.h"
 #include "GameStateManagement\Instructions.h"
+#include "GameStateManagement\Highscore.h"
+
 #include "SceneText1.h"
 
 struct GLFWwindow;

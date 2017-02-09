@@ -38,7 +38,7 @@ private:
 	CPlayerInfo* playerInfo;
 	GroundEntity* groundEntity;
 	FPSCamera camera;
-	TextEntity* textObj[13];
+	TextEntity* textObj[12];
 	Light* lights[2];
 	GenericEntity* theCube[5];
 	unsigned t0;
@@ -47,6 +47,7 @@ private:
 	int currWaveEnemy = 0;
 	unsigned  elasped = 0;
 	Moving* movingEnemy;
+	int waveno1, waveno2, waveno3, waveno4, nowave;
 	int wave1;
 	int wave2;
 	int wave3;
@@ -54,9 +55,13 @@ private:
 	int survive;
 	CEnemy* theEnemy;
 	SpriteEntity* volume;
+	SpriteEntity* win;
+	SpriteEntity* lose;
+
 	bool ShowSettings = false;
 	Vector3 settingsScale;
 	float sound;
+	bool added = false;
 	static SceneText1* sInstance; // The pointer to the object that gets registered
 };
 

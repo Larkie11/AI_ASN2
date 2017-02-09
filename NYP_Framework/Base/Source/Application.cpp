@@ -70,9 +70,6 @@ void Application::Init()
 	m_window_width = CLuaInterface::GetInstance()->getIntValue("width");
 	m_window_height = CLuaInterface::GetInstance()->getIntValue("height");
 
-	CLuaInterface::GetInstance()->saveFloatValue("Player1", 9.0001, true);
-	CLuaInterface::GetInstance()->saveIntValue("Player2", 100, false);
-
 	//Set the GLFW window creation hints - these are optional
 	glfwWindowHint(GLFW_SAMPLES, 4); //Request 4x antialiasing
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); //Request a specific OpenGL version
@@ -120,6 +117,7 @@ void Application::Init()
 	SceneManager::GetInstance()->AddScene("MenuState", new CMenuState());
 	SceneManager::GetInstance()->AddScene("SettingsState", new CSettings());
 	SceneManager::GetInstance()->AddScene("InstructionsState", new CInstructions());
+	SceneManager::GetInstance()->AddScene("HighscoreState", new CHighScore());
 
 	SceneManager::GetInstance()->AddScene("GameState", new SceneText());
 	SceneManager::GetInstance()->AddScene("GameState1", new SceneText1());

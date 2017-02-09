@@ -110,8 +110,8 @@ public:
 	void AttachCamera(FPSCamera* _cameraPtr);
 	void DetachCamera(void);
 	int playerHealth;
-	int playerScore;
-		void Render(const std::string& _meshName);
+	float playerScore;
+	void Render(const std::string& _meshName);
 
 private:
 	Vector3 defaultPosition, defaultTarget, defaultUp;

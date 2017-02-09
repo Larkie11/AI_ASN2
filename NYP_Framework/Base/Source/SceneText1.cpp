@@ -365,13 +365,21 @@ void SceneText1::Init()
 	MeshBuilder::GetInstance()->GetMesh("VOLUME")->textureID = LoadTGA(CLuaInterface::GetInstance()->GetStringField("game"));
 	volume = Create::Sprite2DObject("VOLUME", Vector3(0, 700, 0.0f), Vector3(500, 250, 0.0f));
 
+
 	EntityManager::GetInstance()->AddEntity(movingEnemy, true);
-	for (int i = 0; i < 2; i++)
+	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "enemywave");
+	nowave = CLuaInterface::GetInstance()->GetField("no");
+	waveno1 = CLuaInterface::GetInstance()->GetField("a");
+	waveno2 = CLuaInterface::GetInstance()->GetField("b");
+	waveno3 = CLuaInterface::GetInstance()->GetField("c");
+	waveno4 = CLuaInterface::GetInstance()->GetField("d");
+
+	for (int i = 0; i < nowave; i++)
 	{
 		theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(-250, 250), 0.0f, Math::RandIntMinMax(-250, 250)), Vector3(Math::RandIntMinMax(-10, 10), 0.0f, Math::RandIntMinMax(-10, 10)), 0, groundEntity);
 		theEnemy->SetNumOfFollowers(0);
 	}
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < nowave; i++)
 	{
 		theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(-250, 250), 0.0f, Math::RandIntMinMax(-250, 240)), Vector3(Math::RandIntMinMax(-10, 10), 0.0f, Math::RandIntMinMax(-10, 10)), 0, groundEntity);
 		theEnemy->SetNumOfFollowers(1);
@@ -407,10 +415,19 @@ void SceneText1::Init()
 	textObj[8] = Create::Text2DObject("text", Vector3(-halfWindowWidth + 80, Application::GetInstance().GetWindowHeight() / 2.5, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(1.0f, 0.0f, 0.0f));
 	textObj[9] = Create::Text2DObject("text", Vector3(-halfWindowWidth + 140, Application::GetInstance().GetWindowHeight() / 3.5, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(1.0f, 0.0f, 0.0f));
 	textObj[10] = Create::Text2DObject("text", Vector3(-halfWindowWidth + 140, Application::GetInstance().GetWindowHeight() / 3, 0.0f), "", Vector3(fontSize, fontSize, fontSize), Color(1.0f, 0.0f, 0.0f));
+	textObj[11] = Create::Text2DObject("text", Vector3(-halfWindowWidth + 140, 400, 0.1f), "", Vector3(fontSize, fontSize, fontSize), Color(1.0f, 0.0f, 0.0f));
 
 	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "music");
 	Sound::GetInstance()->playMusic(CLuaInterface::GetInstance()->GetStringField("BGM"));
 	sound = Sound::GetInstance()->getOnOff();
+
+	lua_getglobal(CLuaInterface::GetInstance()->theLuaState, "pictures");
+	MeshBuilder::GetInstance()->GenerateQuad("WIN", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GetMesh("WIN")->textureID = LoadTGA(CLuaInterface::GetInstance()->GetStringField("win"));
+	MeshBuilder::GetInstance()->GenerateQuad("LOSE", Color(1, 1, 1), 1.f);
+	MeshBuilder::GetInstance()->GetMesh("LOSE")->textureID = LoadTGA(CLuaInterface::GetInstance()->GetStringField("lose"));
+	win = Create::Sprite2DObject("WIN", Vector3(0, 700, 0.f), Vector3(800.f, 600.0f, 0.0f));
+	lose = Create::Sprite2DObject("LOSE", Vector3(0, 700, 0.f), Vector3(800.f, 600.0f, 0.0f));
 }
 
 void SceneText1::Update(double dt)
@@ -421,11 +438,6 @@ void SceneText1::Update(double dt)
 		if (!ShowSettings)
 		{
 			ShowSettings = true;
-			wave1 += elasped;
-			wave2 += elasped;
-			wave3 += elasped;
-			wave4 += elasped;
-			survive += elasped;
 		}
 		else if (ShowSettings)
 			ShowSettings = false;
@@ -463,7 +475,7 @@ void SceneText1::Update(double dt)
 	textObj[0]->SetText(ss.str());
 	textObj[1]->SetText(ss2.str());
 
-	if (!ShowSettings)
+	if (!ShowSettings && waveNo != "WIN" && waveNo != "LOSE")
 	{
 		EntityManager::GetInstance()->Update(dt);
 		movingEnemy->Update(dt, playerInfo->GetPos());
@@ -492,7 +504,7 @@ void SceneText1::Update(double dt)
 		}*/
 		if (elasped == wave1 && waveNo == "1")
 		{
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i <= waveno1; i++)
 			{
 				theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(-250, -240), 0.0f, Math::RandIntMinMax(-250, -240)), Vector3(Math::RandIntMinMax(-10, 10), 0.0f, Math::RandIntMinMax(-10, 10)), Math::RandFloatMinMax(5.f, 7.f), groundEntity);
 				theEnemy->SetNumOfFollowers(0);
@@ -517,7 +529,7 @@ void SceneText1::Update(double dt)
 
 		if (waveNo == "2")
 		{
-			for (currWaveEnemy; currWaveEnemy < 3;)
+			for (currWaveEnemy; currWaveEnemy <= waveno2;)
 			{
 				theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(250, 200), 0.0f, Math::RandIntMinMax(-200, -200)), Vector3(Math::RandIntMinMax(-25, 2), 0.0f, Math::RandIntMinMax(10, 0)), Math::RandFloatMinMax(4.f, 10.f), groundEntity);
 				theEnemy->SetNumOfFollowers(1);
@@ -527,7 +539,7 @@ void SceneText1::Update(double dt)
 		}
 		if (waveNo == "3")
 		{
-			for (currWaveEnemy; currWaveEnemy < 6;)
+			for (currWaveEnemy; currWaveEnemy <= waveno3;)
 			{
 				theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(-32, -35), 0.0f, Math::RandIntMinMax(-455, -400)), Vector3(Math::RandIntMinMax(-25, 2), 0.0f, Math::RandIntMinMax(10, 0)), Math::RandFloatMinMax(5.f, 15.f), groundEntity);
 				currWaveEnemy++;
@@ -536,7 +548,7 @@ void SceneText1::Update(double dt)
 		}
 		if (waveNo == "4")
 		{
-			for (currWaveEnemy; currWaveEnemy < 2;)
+			for (currWaveEnemy; currWaveEnemy <= waveno4;)
 			{
 				theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(-32, -35), 0.0f, Math::RandIntMinMax(-455, -400)), Vector3(Math::RandIntMinMax(-25, 2), 0.0f, Math::RandIntMinMax(10, 0)), Math::RandFloatMinMax(2.f, 8.f), groundEntity);
 				theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(-250, -240), 0.0f, Math::RandIntMinMax(-250, -240)), Vector3(Math::RandIntMinMax(-10, 0), 0.0f, Math::RandIntMinMax(10, 0)), Math::RandFloatMinMax(5.f, 7.f), groundEntity);
@@ -551,15 +563,13 @@ void SceneText1::Update(double dt)
 		if (elasped >= survive)
 		{
 			waveNo = "WIN";
-			SceneManager::GetInstance()->SetActiveScene("MenuState");
-			Sound::GetInstance()->stopMusic("Music//Background.mp3");
+			win->SetPosition(Vector3(0, 0, 1));
 		}
 		if (playerInfo->playerHealth <= 0)
+		{
+			lose->SetPosition(Vector3(0, 0, 1));
 			waveNo = "LOSE";
-
-
-
-		//}
+		}
 
 		/*if (KeyboardController::GetInstance()->IsKeyDown('I'))
 			lights[0]->position.z -= (float)(10.f * dt);
@@ -706,15 +716,20 @@ void SceneText1::Render()
 	}
 	if (waveNo == "WIN")
 	{
-		ss1.str("");
-		ss1 << "You have survived!";
-		textObj[10]->SetText(ss1.str());
+		Sound::GetInstance()->stopMusic("Music//Background.mp3");
+		float playerScore = playerInfo->playerScore;
+		if (!added)
+		{
+			float currentScore = CLuaInterface::GetInstance()->GetScore("Player1");
+			if (currentScore < playerScore)
+				CLuaInterface::GetInstance()->saveFloatValue("Player1", playerScore, true);
+
+			added = true;
+		}
 	}
+
 	if (waveNo == "LOSE")
 	{
-		ss1.str("");
-		ss1 << "You lost!";
-		textObj[10]->SetText(ss1.str());
 	}
 	// Setup 2D pipeline then render 2D
 	int halfWindowWidth = Application::GetInstance().GetWindowWidth() / 2;
@@ -730,6 +745,12 @@ void SceneText1::Exit()
 	// Detach camera from other entities
 	GraphicsManager::GetInstance()->DetachCamera();
 	playerInfo->DetachCamera();
+	EntityManager::GetInstance()->RemoveEntity(volume);
+	EntityManager::GetInstance()->RemoveEntity(win);
+	EntityManager::GetInstance()->RemoveEntity(lose);
+	MeshBuilder::GetInstance()->RemoveMesh("VOLUME");
+	MeshBuilder::GetInstance()->RemoveMesh("WIN");
+	MeshBuilder::GetInstance()->RemoveMesh("LOSE");
 
 	if (playerInfo->DropInstance() == false)
 	{

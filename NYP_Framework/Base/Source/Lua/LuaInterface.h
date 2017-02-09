@@ -61,9 +61,10 @@ public:
 	const char* getStringtValue(const char* varName);
 	void error(const char*errorCode);
 	const char*  CLuaInterface::GetStringField(const char*key);
-
+	float GetScore(const char* varName);
 	// Pointer to the Lua State
 	lua_State *theLuaState;
+	lua_State *highScoreState;
 	lua_State *theErrorState;
 };
 
