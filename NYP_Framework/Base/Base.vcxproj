@@ -26,6 +26,7 @@
     <ClCompile Include="Source\Light.cpp" />
     <ClCompile Include="Source\Lua\LuaInterface.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Moving.cpp" />
     <ClCompile Include="Source\OBJMesh.cpp" />
     <ClCompile Include="Source\PlayerInfo\PlayerInfo.cpp" />
     <ClCompile Include="Source\Projectile\Grenade.cpp" />
@@ -71,6 +72,7 @@
     <ClInclude Include="Source\Lua\luaconf.h" />
     <ClInclude Include="Source\Lua\LuaInterface.h" />
     <ClInclude Include="Source\Lua\lualib.h" />
+    <ClInclude Include="Source\Moving.h" />
     <ClInclude Include="Source\OBJMesh.h" />
     <ClInclude Include="Source\PlayerInfo\PlayerInfo.h" />
     <ClInclude Include="Source\Projectile\Grenade.h" />

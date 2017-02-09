@@ -348,6 +348,14 @@ void SceneText1::Init()
 	groundEntity->SetGrids(Vector3(10.0f, 1.0f, 10.0f));
 	playerInfo->SetTerrain(groundEntity);
 	
+	movingEnemy = new Moving();
+	movingEnemy->Init();
+	movingEnemy->WayPoints.push_back(Vector3(300, 0, 300));
+	movingEnemy->WayPoints.push_back(Vector3(250, 0, 250));
+	movingEnemy->WayPoints.push_back(Vector3(-200, 0, 200));
+	movingEnemy->WayPoints.push_back(Vector3(100, 0, -250));
+
+	EntityManager::GetInstance()->AddEntity(movingEnemy, true);
 	for (int i = 0; i < 2; i++)
 	{
 		theEnemy = Create::Enemy(Vector3(Math::RandIntMinMax(-250, 250), 0.0f, Math::RandIntMinMax(-250, 250)), Vector3(Math::RandIntMinMax(-10, 10), 0.0f, Math::RandIntMinMax(-10, 10)), 0, groundEntity);
@@ -395,7 +403,7 @@ void SceneText1::Update(double dt)
 {
 	// Update our entities
 	EntityManager::GetInstance()->Update(dt);
-	
+	movingEnemy->Update(dt,playerInfo->GetPos());
 	elasped = (clock() - t0) / CLOCKS_PER_SEC;
 	// THIS WHOLE CHUNK TILL <THERE> CAN REMOVE INTO ENTITIES LOGIC! Or maybe into a scene function to keep the update clean
 	/*if (KeyboardController::GetInstance()->IsKeyDown('1'))

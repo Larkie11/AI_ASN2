@@ -13,12 +13,13 @@
 #include "Enemy\Enemy.h"
 #include "Sound.h"
 #include <ctime>
-
+#include "Moving.h"
 
 class ShaderProgram;
 class SceneManager;
 class TextEntity;
 class Light;
+
 class SceneText1 : public Scene
 {	
 public:
@@ -43,6 +44,7 @@ private:
 	string waveNo = "1";
 	int currWaveEnemy = 0;
 	unsigned  elasped = 0;
+	Moving* movingEnemy;
 	int wave1;
 	int wave2;
 	int wave3;

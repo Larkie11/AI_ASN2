@@ -22,7 +22,7 @@ using namespace std;
 
 CSettings::CSettings()
 {
-	sound = 0.f;
+	sound = Sound::GetInstance()->getOnOff();
 }
 
 CSettings::~CSettings()
@@ -33,7 +33,7 @@ CSettings::~CSettings()
 void CSettings::Init()
 {
 	// Create and attach camera to scene
-		camera.Init(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	camera.Init(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 0));
 	GraphicsManager::GetInstance()->AttachCamera(&camera);
 	settingypos = 600;
 
